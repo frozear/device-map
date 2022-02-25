@@ -5,6 +5,7 @@ import folium
 import csv
 import sys
 import webbrowser
+import re
 from folium import plugins
 
 class MainWindow(qtw.QWidget):
@@ -170,10 +171,12 @@ class MainWindow(qtw.QWidget):
             layer_reclosers = folium.FeatureGroup(name='Reclosers')
             layer_regulators = folium.FeatureGroup(name='Regulators')
             layer_capacitor = folium.FeatureGroup(name='Capacitors')
+            layer_other = folium.FeatureGroup(name='Other')
             layer_fuses.add_to(m)
             layer_reclosers.add_to(m)
             layer_regulators.add_to(m)
             layer_capacitor.add_to(m)
+            layer_other.add_to(m)
             folium.LayerControl().add_to(m)
             filedialog = qtw.QFileDialog.getOpenFileName(self, "Select a file...", "", "Spreadsheet (*.csv *.xml *.kml)")
             csv_file = csv.reader(open(filedialog[0], "r"), delimiter=",")
@@ -224,6 +227,21 @@ class MainWindow(qtw.QWidget):
                                                                   border_color='#9999dd',
                                                                   background_color='#9999dd')
                                         ).add_to(layer_regulators)
+            
+                
+                elif row:
+                                folium.Marker([row[1], row[2]],
+                                        #tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',
+                                                                  icon_shape="marker",
+                                                                  iconSize=[40,40],
+                                                                  number=row[0],
+                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                  border_color='#9999dd',
+                                                                  background_color='#9999dd')
+                                        ).add_to(layer_other)
+            
+            
             m
             m.save('devicelistmap.html')
             webbrowser.open_new_tab('devicelistmap.html')
