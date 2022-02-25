@@ -219,27 +219,30 @@ class MainWindow(qtw.QWidget):
                 elif row[3] == 'Regulator':
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#9999dd',
-                                                                  background_color='#9999dd')
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',                       
+                                                                icon_shape="marker",
+                                                                iconSize=[40,40],
+                                                                number=row[0],
+                                                                inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                border_color='#9999dd',
+                                                                background_color='#9999dd')
                                         ).add_to(layer_regulators)
             
-                
-                elif row:
+                else:
+                        try:
                                 folium.Marker([row[1], row[2]],
-                                        #tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#9999dd',
-                                                                  background_color='#9999dd')
+                                        tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',                       
+                                                                icon_shape="marker",
+                                                                iconSize=[40,40],
+                                                                number=row[0],
+                                                                inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                border_color='#9999dd',
+                                                                background_color='#9999dd')
                                         ).add_to(layer_other)
+                        except:
+                                print("error")
+                
             
             
             m
