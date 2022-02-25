@@ -58,11 +58,11 @@ class MainWindow(qtw.QWidget):
             layer_fuses = folium.FeatureGroup(name='Fuses')
             layer_reclosers = folium.FeatureGroup(name='Reclosers')
             layer_regulators = folium.FeatureGroup(name='Regulators')
-            layer_capacitor = folium.FeatureGroup(name='Capacitors')
+            layer_capacitors = folium.FeatureGroup(name='Capacitors')
             layer_fuses.add_to(m)
             layer_reclosers.add_to(m)
             layer_regulators.add_to(m)
-            layer_capacitor.add_to(m)
+            layer_capacitors.add_to(m)
             folium.LayerControl().add_to(m)
             device_string = inputBox.text()
             device_list = device_string.split(", ")
@@ -124,7 +124,7 @@ class MainWindow(qtw.QWidget):
                                                                   inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
                                                                   border_color='#76cba1',
                                                                   background_color='#76cba1')
-                                        ).add_to(layer_capacitor)
+                                        ).add_to(layer_capacitors)
                     elif single_plot == 'all' and row[3] == 'Recloser':
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
@@ -167,23 +167,18 @@ class MainWindow(qtw.QWidget):
             folium.TileLayer(tiles='openstreetmap', name='Normal').add_to(m)
             folium.TileLayer('Stamen Terrain', name='Terrain map').add_to(m)
             folium.TileLayer('Stamen Toner', name='Printer friendly').add_to(m)
+            
             layer_fuses = folium.FeatureGroup(name='Fuses')
             layer_reclosers = folium.FeatureGroup(name='Reclosers')
             layer_regulators = folium.FeatureGroup(name='Regulators')
-            layer_capacitor = folium.FeatureGroup(name='Capacitors')
+            layer_capacitors = folium.FeatureGroup(name='Capacitors')
             layer_other = folium.FeatureGroup(name='Other')
-            layer_fuses.add_to(m)
-            layer_reclosers.add_to(m)
-            layer_regulators.add_to(m)
-            layer_capacitor.add_to(m)
-            layer_other.add_to(m)
-            folium.LayerControl().add_to(m)
             filedialog = qtw.QFileDialog.getOpenFileName(self, "Select a file...", "", "Spreadsheet (*.csv *.xml *.kml)")
             csv_file = csv.reader(open(filedialog[0], "r"), delimiter=",")
-            #print(csv_file)
+            
             for row in csv_file:
-                #print(row)
                 if row[3] == 'Capacitor':
+                                layer_capacitors.add_to(m)
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
                                         icon=plugins.BeautifyIcon(icon='arrow-down',
@@ -193,8 +188,9 @@ class MainWindow(qtw.QWidget):
                                                                   inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
                                                                   border_color='#76cba1',
                                                                   background_color='#76cba1')
-                                        ).add_to(layer_capacitor)
+                                        ).add_to(layer_capacitors)
                 elif row[3] == 'Recloser':
+                                layer_reclosers.add_to(m)
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
                                         icon=plugins.BeautifyIcon(icon='arrow-down',
@@ -206,6 +202,7 @@ class MainWindow(qtw.QWidget):
                                                                   background_color='orange')
                                         ).add_to(layer_reclosers)
                 elif row[3] == 'Fuse':
+                                layer_fuses.add_to(m)
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
                                         icon=plugins.BeautifyIcon(icon='arrow-down',
@@ -217,6 +214,7 @@ class MainWindow(qtw.QWidget):
                                                                   background_color='#6db6ff')
                                         ).add_to(layer_fuses)
                 elif row[3] == 'Regulator':
+                                layer_regulators.add_to(m)
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
                                         icon=plugins.BeautifyIcon(icon='arrow-down',                       
@@ -228,8 +226,7 @@ class MainWindow(qtw.QWidget):
                                                                 background_color='#9999dd')
                                         ).add_to(layer_regulators)
             
-                else:
-                        try:
+                elif row[0].isdigit():
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
                                         icon=plugins.BeautifyIcon(icon='arrow-down',                       
@@ -239,12 +236,10 @@ class MainWindow(qtw.QWidget):
                                                                 inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
                                                                 border_color='#9999dd',
                                                                 background_color='#9999dd')
-                                        ).add_to(layer_other)
-                        except:
-                                print("error")
-                
+                                        ).add_to(m)
+                        
             
-            
+            folium.LayerControl().add_to(m)            
             m
             m.save('devicelistmap.html')
             webbrowser.open_new_tab('devicelistmap.html')
