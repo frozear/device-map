@@ -34,10 +34,21 @@ class MainWindow(qtw.QWidget):
         self.layout().addWidget(inputBox)
 
         #Generates PyQt5 Button
-        button = qtw.QPushButton("Show Devices", clicked = lambda: button_pressed())
+        button = qtw.QPushButton("Map Listed Devices", clicked = lambda: button_pressed())
         self.layout().addWidget(button)
         self.show()
 
+        #Generates PyQt5 Label
+        my_label2 = qtw.QLabel("or")
+        my_label2.setFont(qtg.QFont('Helvetica', 12))
+        my_label2.setAlignment(qtc.Qt.AlignCenter)
+        self.layout().addWidget(my_label2)
+        
+        #Generates Second PyQt5 Button
+        button1 = qtw.QPushButton("Map Whole Spreadsheet File", clicked = lambda: button1_pressed())
+        self.layout().addWidget(button1)
+        self.show()
+        
         def button_pressed():
             m = folium.Map(location=[38.433993,-122.717628],tiles=None, control_scale=True, zoom_start=11)
             folium.TileLayer(tiles='openstreetmap', name='Normal').add_to(m)
@@ -136,6 +147,73 @@ class MainWindow(qtw.QWidget):
                                                                   background_color='#6db6ff')
                                         ).add_to(layer_fuses)
                     elif single_plot == 'all' and row[3] == 'Regulator':
+                                folium.Marker([row[1], row[2]],
+                                        tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',
+                                                                  icon_shape="marker",
+                                                                  iconSize=[40,40],
+                                                                  number=row[0],
+                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                  border_color='#9999dd',
+                                                                  background_color='#9999dd')
+                                        ).add_to(layer_regulators)
+            m
+            m.save('devicelistmap.html')
+            webbrowser.open_new_tab('devicelistmap.html')
+
+        def button1_pressed():
+            m = folium.Map(location=[38.433993,-122.717628],tiles=None, control_scale=True, zoom_start=11)
+            folium.TileLayer(tiles='openstreetmap', name='Normal').add_to(m)
+            folium.TileLayer('Stamen Terrain', name='Terrain map').add_to(m)
+            folium.TileLayer('Stamen Toner', name='Printer friendly').add_to(m)
+            layer_fuses = folium.FeatureGroup(name='Fuses')
+            layer_reclosers = folium.FeatureGroup(name='Reclosers')
+            layer_regulators = folium.FeatureGroup(name='Regulators')
+            layer_capacitor = folium.FeatureGroup(name='Capacitors')
+            layer_fuses.add_to(m)
+            layer_reclosers.add_to(m)
+            layer_regulators.add_to(m)
+            layer_capacitor.add_to(m)
+            folium.LayerControl().add_to(m)
+            filedialog = qtw.QFileDialog.getOpenFileName(self, "Select a file...", "", "Spreadsheet (*.csv *.xml *.kml)")
+            csv_file = csv.reader(open(filedialog[0], "r"), delimiter=",")
+            #print(csv_file)
+            for row in csv_file:
+                #print(row)
+                if row[3] == 'Capacitor':
+                                folium.Marker([row[1], row[2]],
+                                        tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',
+                                                                  icon_shape="marker",
+                                                                  iconSize=[40,40],
+                                                                  number=row[0],
+                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                  border_color='#76cba1',
+                                                                  background_color='#76cba1')
+                                        ).add_to(layer_capacitor)
+                elif row[3] == 'Recloser':
+                                folium.Marker([row[1], row[2]],
+                                        tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',
+                                                                  icon_shape="marker",
+                                                                  iconSize=[40,40],
+                                                                  number=row[0],
+                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                  border_color='orange',
+                                                                  background_color='orange')
+                                        ).add_to(layer_reclosers)
+                elif row[3] == 'Fuse':
+                                folium.Marker([row[1], row[2]],
+                                        tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',
+                                                                  icon_shape="marker",
+                                                                  iconSize=[40,40],
+                                                                  number=row[0],
+                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                  border_color='#6db6ff',
+                                                                  background_color='#6db6ff')
+                                        ).add_to(layer_fuses)
+                elif row[3] == 'Regulator':
                                 folium.Marker([row[1], row[2]],
                                         tooltip=row[3],
                                         icon=plugins.BeautifyIcon(icon='arrow-down',
