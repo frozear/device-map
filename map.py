@@ -50,6 +50,21 @@ class MainWindow(qtw.QWidget):
         self.layout().addWidget(button1)
         self.show()
         
+        def set_marker(color, layer, row):
+            csv_file = csv.reader(open('sample_device_list.csv', "r"), delimiter=",")
+            row
+            folium.Marker([row[1], row[2]],
+                                        tooltip=row[3],
+                                        icon=plugins.BeautifyIcon(icon='arrow-down',
+                                                                  icon_shape="marker",
+                                                                  iconSize=[40,40],
+                                                                  number=row[0],
+                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
+                                                                  border_color=(color),
+                                                                  background_color=(color))
+                                                                  #background_color='#76cba1')
+                                        ).add_to(layer)
+        
         def button_pressed():
             m = folium.Map(location=[38.433993,-122.717628],tiles=None, control_scale=True, zoom_start=11)
             folium.TileLayer(tiles='openstreetmap', name='Normal').add_to(m)
@@ -71,93 +86,21 @@ class MainWindow(qtw.QWidget):
                 csv_file = csv.reader(open('sample_device_list.csv', "r"), delimiter=",")
                 for row in csv_file:
                     if single_plot == row[0] and row[3] == 'Capacitor':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#76cba1',
-                                                                  background_color='#76cba1')
-                                        ).add_to(layer_capacitor)
+                                set_marker('#76cba1', layer_capacitors, row)
                     elif single_plot == row[0] and row[3] == 'Recloser':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='orange',
-                                                                  background_color='orange')
-                                        ).add_to(layer_reclosers)
+                                set_marker('orange', layer_reclosers, row)
                     elif single_plot == row[0] and row[3] == 'Fuse':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#6db6ff',
-                                                                  background_color='#6db6ff')
-                                        ).add_to(layer_fuses)
+                                set_marker('#6db6ff', layer_fuses, row)
                     elif single_plot == row[0] and row[3] == 'Regulator':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#9999dd',
-                                                                  background_color='#9999dd')
-                                        ).add_to(layer_regulators)
+                                set_marker('#9999dd', layer_regulators, row)
                     if single_plot == 'all' and row[3] == 'Capacitor':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#76cba1',
-                                                                  background_color='#76cba1')
-                                        ).add_to(layer_capacitors)
+                                set_marker('#76cba1', layer_capacitors, row)
                     elif single_plot == 'all' and row[3] == 'Recloser':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='orange',
-                                                                  background_color='orange')
-                                        ).add_to(layer_reclosers)
+                                set_marker('orange', layer_reclosers, row)
                     elif single_plot == 'all' and row[3] == 'Fuse':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#6db6ff',
-                                                                  background_color='#6db6ff')
-                                        ).add_to(layer_fuses)
+                                set_marker('#6db6ff', layer_fuses, row)
                     elif single_plot == 'all' and row[3] == 'Regulator':
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#9999dd',
-                                                                  background_color='#9999dd')
-                                        ).add_to(layer_regulators)
+                                set_marker('#9999dd', layer_regulators, row)
             m
             m.save('devicelistmap.html')
             webbrowser.open_new_tab('devicelistmap.html')
@@ -179,65 +122,17 @@ class MainWindow(qtw.QWidget):
             for row in csv_file:
                 if row[3] == 'Capacitor':
                                 layer_capacitors.add_to(m)
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#76cba1',
-                                                                  background_color='#76cba1')
-                                        ).add_to(layer_capacitors)
+                                set_marker('#76cba1', layer_capacitors, row)
                 elif row[3] == 'Recloser':
-                                layer_reclosers.add_to(m)
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='orange',
-                                                                  background_color='orange')
-                                        ).add_to(layer_reclosers)
+                                set_marker('orange', layer_reclosers, row)
                 elif row[3] == 'Fuse':
                                 layer_fuses.add_to(m)
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',
-                                                                  icon_shape="marker",
-                                                                  iconSize=[40,40],
-                                                                  number=row[0],
-                                                                  inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                  border_color='#6db6ff',
-                                                                  background_color='#6db6ff')
-                                        ).add_to(layer_fuses)
+                                set_marker('#6db6ff', layer_fuses, row)
                 elif row[3] == 'Regulator':
-                                layer_regulators.add_to(m)
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',                       
-                                                                icon_shape="marker",
-                                                                iconSize=[40,40],
-                                                                number=row[0],
-                                                                inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                border_color='#9999dd',
-                                                                background_color='#9999dd')
-                                        ).add_to(layer_regulators)
+                                set_marker('#9999dd', layer_regulators, row)
             
                 elif row[0].isdigit():
-                                folium.Marker([row[1], row[2]],
-                                        tooltip=row[3],
-                                        icon=plugins.BeautifyIcon(icon='arrow-down',                       
-                                                                icon_shape="marker",
-                                                                iconSize=[40,40],
-                                                                number=row[0],
-                                                                inner_icon_style='font-family:Verdana, sans-serif; text-align: left; font-size:14px',
-                                                                border_color='#9999dd',
-                                                                background_color='#9999dd')
-                                        ).add_to(m)
-                        
+                                set_marker('#9999dd', m, row)
             
             folium.LayerControl().add_to(m)            
             m
