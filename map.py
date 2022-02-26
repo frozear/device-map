@@ -124,11 +124,13 @@ class MainWindow(qtw.QWidget):
                                 layer_capacitors.add_to(m)
                                 set_marker('#76cba1', layer_capacitors, row)
                 elif row[3] == 'Recloser':
+                                layer_reclosers.add_to(m)
                                 set_marker('orange', layer_reclosers, row)
                 elif row[3] == 'Fuse':
                                 layer_fuses.add_to(m)
                                 set_marker('#6db6ff', layer_fuses, row)
                 elif row[3] == 'Regulator':
+                                layer_regulators.add_to(m)
                                 set_marker('#9999dd', layer_regulators, row)
             
                 elif row[0].isdigit():
